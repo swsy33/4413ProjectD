@@ -1,8 +1,11 @@
 /*global vars*/
 var result;
-var p, i, a;
 var request;
-var mortgage = {principle:0, interest: 0, amortization : 0, message :"", monthlyPay: 0};
+var state = {principle : "",
+		interest : "",
+		amort : "",
+		msg:"",
+		payment : ""};
 
 function show(shown, hidden) {
 	document.getElementById(shown).style.display = "block";
@@ -19,15 +22,17 @@ function setDefaultAmort()
 
 function validate()
 {
-	loadDoc("", "");
-	var msg = "";
-	getParameter();
-	if(isNaN(p)|| p <= 0)
-		{
-		msg = "principle must be a positive number!";
-		alert(msg);
-		}
-	
+	//alert("in validate1");
+	setStatus();
+	loadDoc();
+	//alert("in validate2");
+	if(isNaN(status.principle)|| status.principle <= 0)
+	{
+		status.msg = "principle must be a positive number!";
+		alert("message" + status.msg);
+	}
+	//alert("in validate3");
+
 
 	return false;
 }
@@ -50,26 +55,53 @@ function populateBankList()
 
 
 //---------------------------------
-function getParameter()
-{
-	p = document.getElementById("principle").value;
-	i = document.getElementById("interest").value;
-	a = document.querySelector('input[name="amortization"]:checked').value;
 
+function reset()
+{
+	//alert("in rest");
+	state = {principle : "",
+			interest : "",
+			amort : "25",
+			msg:"",
+			payment : ""};
+	setDefaultAmort();
+	show("UI");
+}
+
+function showPage(id)
+{
+	if(id === "UI")
+	{
+		show("UI", "Result");
+	}
+	if(id === "Result")
+	{
+		show("Result", "UI");
+	}
 }
 
 function setErrorMessage(msg)
 {
 	document.getElementById("message").innerHTML = msg;
+	status.msg = msg;
 }
 //--------------------------------
 
-function loadDoc(address, data) {
+function setStatus()
+{
+	var p = document.getElementById("principle").value;
+	var i = document.getElementById("interest").value;
+	var a = document.querySelector('input[name="amortization"]:checked').value;
+	status.principle = p;
+	status.interest = i;
+	status.amort = a;
+}
+
+function loadDoc() {
 	request = new XMLHttpRequest();
 	//alert("in loadD");
-	getParameter();
 	//alert("in loadD");
-	request.open("POST", "http://localhost:4413/mcApp1/payment.do?principle="+p+"&interest="+i+"&amort="+ a, true);
+	request.open("POST", "http://localhost:4413/mcApp1/payment.do?principle="+status.principle+"&interest="+status.interest+"&amort="+ status.amort, true);
 	//alert("in loadD2");
 	request.onreadystatechange =  handler;
 	//alert("in loadD3");
@@ -100,7 +132,7 @@ function handler()
 //----------------------------------------------------
 
 window.onload = function () {
-	setDefaultAmort();
+	reset();
 	populateBankList();
-	
+
 };
