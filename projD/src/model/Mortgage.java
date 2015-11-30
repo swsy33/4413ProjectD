@@ -12,7 +12,24 @@ public class Mortgage {
 		this.dao = new MortgageDAO();
 	}
 
-	public double computePayment(String p, String a, String r, String bank) throws Exception
+	public String servePayment(String p, String a, String r)
+	{
+		String result = "";
+		double pay = 0;
+		try
+		{
+			pay = computePayment(p, a, r, null);
+			result = "Ok\n" + String.valueOf(pay);
+		}
+		catch(Exception e)
+		{
+			result = "No\n" + e.getMessage();
+		}
+
+		return result;
+		
+	}
+	private double computePayment(String p, String a, String r, String bank) throws Exception
 	{
 
 		double result = 0; //monthly payment

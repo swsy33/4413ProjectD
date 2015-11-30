@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.ServePayment;
+import model.Mortgage;
 
 /**
  * Servlet implementation class Service
@@ -28,7 +28,7 @@ public class Service extends HttpServlet {
 		super.init();
 		try
 		{
-			ServePayment model = new ServePayment();
+			Mortgage model = new Mortgage();
 			this.getServletContext().setAttribute("model",model);		
 		}
 		catch(Exception e)
@@ -41,13 +41,13 @@ public class Service extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ServePayment m = (ServePayment)this.getServletContext().getAttribute("model");
+		Mortgage m = (Mortgage)this.getServletContext().getAttribute("model");
 		//---------------------------------------------------------
 		String principle = request.getParameter("principle");
 		String interest =request.getParameter("interest"); 
 		String amort = request.getParameter("amort");
 		String bank = request.getParameter("bank");
-		String payment = m.computePayment(principle, amort,interest);
+		String payment = m.servePayment(principle, amort,interest);
 		//System.out.println("ammm"+ amort);
 		response.setHeader("Content-Type", "text/plain");
 		response.getWriter().println(payment);

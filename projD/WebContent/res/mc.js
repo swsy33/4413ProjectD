@@ -1,6 +1,6 @@
 /*global vars*/
 var result;
-var request;
+//var request;
 var state = {principle : "",
 		interest : "",
 		amort : "",
@@ -23,16 +23,33 @@ function setDefaultAmort()
 function validate()
 {
 	//alert("in validate1");
-	setStatus();
-	loadDoc();
-	//alert("in validate2");
-	if(isNaN(status.principle)|| status.principle <= 0)
-	{
-		status.msg = "principle must be a positive number!";
-		alert("message" + status.msg);
-	}
-	//alert("in validate3");
+	setState();
 
+	//alert("in validate2");
+	if(state.principle === "")
+	{
+		state.msg = "principle cannot be empty!";
+		alert("message " + state.msg);
+	}
+	else if(isNaN(state.principle)|| state.principle <= 0)
+	{
+		state.msg = "principle must be a positive number!";
+		alert("message" + state.msg);
+	}
+	else if(state.interest === "")
+	{
+		state.msg = "interest cannot be empty!";
+		alert("message " + state.msg);
+
+	}
+	else if(isNaN(state.interest) || state.interest <= 0)
+	{
+		state.msg = "interest must be a positive number!";
+		alert("message" + state.msg);
+	}
+	else{
+		doSimpleAjax("http://localhost:4413/projD", state, handler);
+	}
 
 	return false;
 }
@@ -83,35 +100,34 @@ function showPage(id)
 function setErrorMessage(msg)
 {
 	document.getElementById("message").innerHTML = msg;
-	status.msg = msg;
+	state.msg = msg;
 }
 //--------------------------------
 
-function setStatus()
+function setState()
 {
+	//alert("setStatus");
 	var p = document.getElementById("principle").value;
 	var i = document.getElementById("interest").value;
 	var a = document.querySelector('input[name="amortization"]:checked').value;
-	status.principle = p;
-	status.interest = i;
-	status.amort = a;
+	state.principle = p;
+	//alert("printipe" + state.principle)
+	state.interest = i;
+	state.amort = a;
 }
 
-function loadDoc() {
-	request = new XMLHttpRequest();
-	//alert("in loadD");
-	//alert("in loadD");
-	request.open("POST", "http://localhost:4413/mcApp1/payment.do?principle="+status.principle+"&interest="+status.interest+"&amort="+ status.amort, true);
-	//alert("in loadD2");
-	request.onreadystatechange =  handler;
+function doSimpleAjax(address, data, handler) {
+	var request = new XMLHttpRequest();
+	request.open("GET", (address + "?" + data), true);
+	request.onreadystatechange =  function(){handler(request);};
 	//alert("in loadD3");
 	request.send(null);
 
 }
 
-function handler()
+function handler(request)
 {
-	//alert("handle");
+	alert("handle");
 	if (request.readyState == 4 && request.status == 200) 
 	{
 		//alert(request.responseText);
@@ -122,7 +138,7 @@ function handler()
 		}
 		else
 		{
-			show("Result", "UI");
+			showPage("Result");
 			document.getElementById("payment").innerHTML = result + "%";
 		}
 
