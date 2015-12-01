@@ -48,11 +48,6 @@ public class Service extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Mortgage m = (Mortgage)this.getServletContext().getAttribute("model");
 		//---------------------------------------------------------
-		/*String principle = request.getParameter("principle");
-		String interest =request.getParameter("interest"); 
-		String amort = request.getParameter("amort");
-		String bank = request.getParameter("bank");
-		String payment = m.servePayment(principle, amort,interest);*/
 		
 		String data = request.getParameter("args");
 		//System.out.println("data" + data);

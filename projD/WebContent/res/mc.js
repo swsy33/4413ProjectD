@@ -147,27 +147,34 @@ function showPayment(request)
 
 function recompute()
 {
+	alert("click recompute");
 	//1. validate
-	var ni = document.getElementById("newinterest").value;
-	alert("new interest: " + ni);
-	if(isNaN(ni)|| ni <= 0)
-	{
-		state.status = "Interest must be a positive number!";
-		alert("message" + state.status);
-	}
-	else if(ni === "")
-	{
-		state.status = "interest cannot be empty!";
-		alert("message " + state.status);
-
-	}
-	else
-	{
-		status.interest = ni;
-		var data = "args=" + JSON.stringify(state); 
-		doSimpleAjax("payment.do", data, showPayment);
-	}
+	//var ni = document.getElementById("newinterest").innerHTML;
+	//alert("new interest: " + ni);
+	show("Result");
+	return true;
+//	if(isNaN(ni)|| ni <= 0)
+//	{
+//		state.status = "Interest must be a positive number!";
+//		alert("message" + state.status);
+//	}
+//	else if(ni === "")
+//	{
+//		state.status = "interest cannot be empty!";
+//		alert("message " + state.status);
+//
+//	}
+//	else
+//	{
+//		status.interest = ni;
+//		var data = "args=" + JSON.stringify(state); 
+//		doSimpleAjax("payment.do", data, showPayment);
+//	}
 }
+function cl()
+{
+	alert("clickckckkc");
+	return false;}
 
 //----------------------------------------------------
 
