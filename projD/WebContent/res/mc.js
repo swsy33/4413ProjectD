@@ -1,6 +1,5 @@
 /*global vars*/
 var result;
-//var request;
 var state = {principle : "",
 		interest : "",
 		amort : "",
@@ -48,7 +47,9 @@ function validate()
 		alert("message" + state.msg);
 	}
 	else{
-		doSimpleAjax("http://localhost:4413/projD", state, handler);
+		var data = "args=" + JSON.stringify(state); 
+		//alert("data is " + data);
+		doSimpleAjax("payment.do", data, showPayment);
 	}
 
 	return false;
@@ -68,9 +69,6 @@ function populateBankList()
 		select.appendChild(el);
 	}
 }
-
-
-
 //---------------------------------
 
 function reset()
@@ -120,17 +118,17 @@ function doSimpleAjax(address, data, handler) {
 	var request = new XMLHttpRequest();
 	request.open("GET", (address + "?" + data), true);
 	request.onreadystatechange =  function(){handler(request);};
-	//alert("in loadD3");
+	alert("in ajax3");
 	request.send(null);
 
 }
 
-function handler(request)
+function showPayment(request)
 {
-	alert("handle");
+	alert("showPayment");
 	if (request.readyState == 4 && request.status == 200) 
 	{
-		//alert(request.responseText);
+		alert("response text: " + request.responseText);
 		result = request.responseText;
 		if(isNaN(result))
 		{
