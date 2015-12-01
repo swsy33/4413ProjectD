@@ -57,13 +57,13 @@
 			For an interest rate of, the monthly payment is:
 			 <label id="payment"></label>
 			  <br /> 
-			  <input id="monthpay" type="submit"
-				name="goback" value="StartOver" />
+			  <input id="startover" type="submit"
+				name="goback" value="StartOver" onclick="reset()" />
 				 <br /> <br /> 
 				 <label> Or
 				try a different annual interest rate: </label>
-				 <input type="text"name="interest"></input>
-				 <input id="monthpay" type="submit"value="Recompute" name="doit"></input>
+				 <input id="newinterest" type="text"name="interest"></input>
+				 <input id="recompute" type="submit"value="Recompute" name="doit" onclick="cl()"></input>
 
 		</form>
 
