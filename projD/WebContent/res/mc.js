@@ -7,6 +7,10 @@ var state = {principle : "",
 		payment : ""};
 
 function show(shown, hidden) {
+	if(document.getElementById(hidden) === null)
+		{
+		alert("hidden" + hidden);
+		}
 	document.getElementById(shown).style.display = "block";
 	document.getElementById(hidden).style.display = "none";
 }
@@ -59,7 +63,7 @@ function populateBankList()
 {
 	var select = document.getElementById("banklist");
 	//need to grab options from the database
-	getBankList();
+	//getBankList();
 	var options = ["1", "2", "3", "4", "5"];
 	for (var i = 0; i < options.length; i++) {
 		var opt = options[i];
@@ -80,7 +84,7 @@ function reset()
 			status:"",
 			payment : ""};
 	setDefaultAmort();
-	show("UI");
+	showPage("UI");
 }
 
 function showPage(id)
@@ -151,7 +155,7 @@ function recompute()
 	//1. validate
 	//var ni = document.getElementById("newinterest").innerHTML;
 	//alert("new interest: " + ni);
-	show("Result");
+	showPage("Result");
 	return true;
 //	if(isNaN(ni)|| ni <= 0)
 //	{
@@ -174,8 +178,12 @@ function recompute()
 function cl()
 {
 	alert("clickckckkc");
-	return false;}
+	//return false;
+	}
 
+function test()
+{
+	return false;}
 //----------------------------------------------------
 
 window.onload = function () {
