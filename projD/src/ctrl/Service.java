@@ -61,13 +61,19 @@ public class Service extends HttpServlet {
 		String principle = jb.getPrinciple();
 		String interest =jb.getInterest();
 		String amort = jb.getAmort();
-		System.out.println("p i a " + principle + interest + amort);
-		String payment = m.servePayment(principle, amort,interest);
+		
+		String result = m.servePayment(principle, amort,interest);
+		String status = result.substring(0, result.indexOf("\n"));
+		String payment = result.substring(result.indexOf("\n") + 1);
+		System.out.println("status " + status);
 		System.out.println("payment  " + payment);
+		jb.setStatus(status);
+		jb.setPayment(payment);
+		//gson.toJson(jb);
 		
-		response.setHeader("Content-Type", "text/plain");
-		
-		//response.getWriter().println(payment);
+		response.setHeader("Content-Type", "text/plain");	
+		response.getWriter().write(gson.toJson(jb));
+		System.out.println(gson.toJson(jb));
 		request.getRequestDispatcher("index.html").forward(request, response);
 
 		

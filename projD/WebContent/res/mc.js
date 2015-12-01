@@ -3,7 +3,7 @@ var result;
 var state = {principle : "",
 		interest : "",
 		amort : "",
-		msg:"",
+		status:"",
 		payment : ""};
 
 function show(shown, hidden) {
@@ -27,24 +27,24 @@ function validate()
 	//alert("in validate2");
 	if(state.principle === "")
 	{
-		state.msg = "principle cannot be empty!";
-		alert("message " + state.msg);
+		state.status = "principle cannot be empty!";
+		alert("message " + state.status);
 	}
 	else if(isNaN(state.principle)|| state.principle <= 0)
 	{
-		state.msg = "principle must be a positive number!";
-		alert("message" + state.msg);
+		state.status = "principle must be a positive number!";
+		alert("message" + state.status);
 	}
 	else if(state.interest === "")
 	{
-		state.msg = "interest cannot be empty!";
-		alert("message " + state.msg);
+		state.status = "interest cannot be empty!";
+		alert("message " + state.status);
 
 	}
 	else if(isNaN(state.interest) || state.interest <= 0)
 	{
-		state.msg = "interest must be a positive number!";
-		alert("message" + state.msg);
+		state.status = "interest must be a positive number!";
+		alert("message" + state.status);
 	}
 	else{
 		var data = "args=" + JSON.stringify(state); 
@@ -77,7 +77,7 @@ function reset()
 	state = {principle : "",
 			interest : "",
 			amort : "25",
-			msg:"",
+			status:"",
 			payment : ""};
 	setDefaultAmort();
 	show("UI");
@@ -95,10 +95,10 @@ function showPage(id)
 	}
 }
 
-function setErrorMessage(msg)
+function setErrorMessage(status)
 {
-	document.getElementById("message").innerHTML = msg;
-	state.msg = msg;
+	document.getElementById("message").innerHTML = status;
+	state.status = status;
 }
 //--------------------------------
 
@@ -125,20 +125,25 @@ function doSimpleAjax(address, data, handler) {
 
 function showPayment(request)
 {
-	alert("showPayment");
+	//alert("showPayment");
 	if (request.readyState == 4 && request.status == 200) 
 	{
+		//alert("response text: " + request.responseText);
+		//result = request.responseText;
+		//alert("showPayment");
 		alert("response text: " + request.responseText);
-		result = request.responseText;
-		if(isNaN(result))
-		{
-			setErrorMessage(result);
-		}
-		else
-		{
-			showPage("Result");
-			document.getElementById("payment").innerHTML = result + "%";
-		}
+		var payload = JSON.parse(request.responseText); 
+		alert("pppppp");
+		alert("json text: " + payload.principle);
+//		if(isNaN(result))
+//		{
+//			setErrorMessage(result);
+//		}
+//		else
+//		{
+//			showPage("Result");
+//			document.getElementById("payment").innerHTML = result + "%";
+//		}
 
 	}
 }
