@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
+import model.JsonBean;
 import model.Mortgage;
 
 /**
@@ -33,7 +36,9 @@ public class Service extends HttpServlet {
 		}
 		catch(Exception e)
 		{
-			throw new ServletException("Init exception........");
+			System.out.println("here");
+			e.printStackTrace();
+			//throw new ServletException("Init exception........");
 		}
 
 	}
@@ -43,14 +48,27 @@ public class Service extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Mortgage m = (Mortgage)this.getServletContext().getAttribute("model");
 		//---------------------------------------------------------
-		String principle = request.getParameter("principle");
+		/*String principle = request.getParameter("principle");
 		String interest =request.getParameter("interest"); 
 		String amort = request.getParameter("amort");
 		String bank = request.getParameter("bank");
+		String payment = m.servePayment(principle, amort,interest);*/
+		
+		String data = request.getParameter("args");
+		//System.out.println("data" + data);
+		Gson gson = new Gson();
+		JsonBean jb = gson.fromJson(data, JsonBean.class);
+		String principle = jb.getPrinciple();
+		String interest =jb.getInterest();
+		String amort = jb.getAmort();
+		System.out.println("p i a " + principle + interest + amort);
 		String payment = m.servePayment(principle, amort,interest);
-		//System.out.println("ammm"+ amort);
+		System.out.println("payment  " + payment);
+		
 		response.setHeader("Content-Type", "text/plain");
-		response.getWriter().println(payment);
+		
+		//response.getWriter().println(payment);
+		request.getRequestDispatcher("index.html").forward(request, response);
 
 		
 	}

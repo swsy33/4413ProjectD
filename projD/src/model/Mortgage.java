@@ -9,7 +9,7 @@ public class Mortgage {
 	
 	public Mortgage() throws Exception
 	{
-		this.dao = new MortgageDAO();
+		//this.dao = new MortgageDAO();
 	}
 
 	public String servePayment(String p, String a, String r)
