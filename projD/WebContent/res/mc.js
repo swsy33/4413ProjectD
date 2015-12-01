@@ -8,9 +8,9 @@ var state = {principle : "",
 
 function show(shown, hidden) {
 	if(document.getElementById(hidden) === null)
-		{
+	{
 		alert("hidden" + hidden);
-		}
+	}
 	document.getElementById(shown).style.display = "block";
 	document.getElementById(hidden).style.display = "none";
 }
@@ -77,7 +77,7 @@ function populateBankList()
 
 function reset()
 {
-	//alert("in rest");
+	alert("in reset");
 	state = {principle : "",
 			interest : "",
 			amort : "25",
@@ -122,7 +122,7 @@ function doSimpleAjax(address, data, handler) {
 	var request = new XMLHttpRequest();
 	request.open("GET", (address + "?" + data), true);
 	request.onreadystatechange =  function(){handler(request);};
-	//alert("in ajax3");
+	alert("in ajax");
 	request.send(null);
 
 }
@@ -149,37 +149,57 @@ function showPayment(request)
 	}
 }
 
-function recompute()
+function updateResult()
+{
+	//if click startover
+//	if(btnClicked.id === "startover")
+//	{
+//		document.getElementById("startover").onclick= function(){alert("click startover");reset();};
+//	}
+//	//alert("click startover");
+//	//if click recompute
+//	if(btnClicked.id === "recompute")
+//	{
+//		document.getElementById("recompute").onclick = function(){reCompute();}
+//	}
+
+	//return false;
+}
+
+function btnClicked(source)
+{
+	alert("click: " + source.id);
+}
+function reCompute()
 {
 	alert("click recompute");
 	//1. validate
-	//var ni = document.getElementById("newinterest").innerHTML;
+	var ni = document.getElementById("newinterest").value;
 	//alert("new interest: " + ni);
-	showPage("Result");
-	return true;
-//	if(isNaN(ni)|| ni <= 0)
-//	{
-//		state.status = "Interest must be a positive number!";
-//		alert("message" + state.status);
-//	}
-//	else if(ni === "")
-//	{
-//		state.status = "interest cannot be empty!";
-//		alert("message " + state.status);
-//
-//	}
-//	else
-//	{
-//		status.interest = ni;
-//		var data = "args=" + JSON.stringify(state); 
-//		doSimpleAjax("payment.do", data, showPayment);
-//	}
-}
-function cl()
-{
-	alert("clickckckkc");
-	//return false;
+	//alert("older p " + state.principle);
+	//alert("older a " + state.amort);
+	//showPage("Result");
+
+	if(isNaN(ni)|| ni <= 0)
+	{
+		state.status = "Interest must be a positive number!";
+		alert("message" + state.status);
+		//return true;
 	}
+	else if(ni === "")
+	{
+		state.status = "interest cannot be empty!";
+		alert("message " + state.status);
+		//return true;
+	}
+	else
+	{
+		status.interest = ni;
+		var data = "args=" + JSON.stringify(state); 
+		doSimpleAjax("payment.do", data, showPayment);
+	}
+}
+
 
 function test()
 {
