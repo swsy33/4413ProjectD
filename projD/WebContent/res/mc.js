@@ -1,5 +1,6 @@
 /*global vars*/
 var result;
+var btnID;
 var state = {principle : "",
 		interest : "",
 		amort : "",
@@ -7,10 +8,6 @@ var state = {principle : "",
 		payment : ""};
 
 function show(shown, hidden) {
-	if(document.getElementById(hidden) === null)
-	{
-		alert("hidden" + hidden);
-	}
 	document.getElementById(shown).style.display = "block";
 	document.getElementById(hidden).style.display = "none";
 }
@@ -77,7 +74,7 @@ function populateBankList()
 
 function reset()
 {
-	alert("in reset");
+	//alert("in reset");
 	state = {principle : "",
 			interest : "",
 			amort : "25",
@@ -122,14 +119,13 @@ function doSimpleAjax(address, data, handler) {
 	var request = new XMLHttpRequest();
 	request.open("GET", (address + "?" + data), true);
 	request.onreadystatechange =  function(){handler(request);};
-	alert("in ajax");
+	//alert("in ajax");
 	request.send(null);
 
 }
 
 function showPayment(request)
 {
-	//alert("showPayment");
 	if (request.readyState == 4 && request.status == 200) 
 	{
 		//alert("response text: " + request.responseText);
@@ -137,7 +133,6 @@ function showPayment(request)
 		//alert("json text: " + payload.status);
 		if(payload.status === "No")
 		{
-			//print error meesage
 			alert("error message " + payload.payment);
 		}
 		else
@@ -152,49 +147,46 @@ function showPayment(request)
 function updateResult()
 {
 	//if click startover
-//	if(btnClicked.id === "startover")
-//	{
-//		document.getElementById("startover").onclick= function(){alert("click startover");reset();};
-//	}
-//	//alert("click startover");
-//	//if click recompute
-//	if(btnClicked.id === "recompute")
-//	{
-//		document.getElementById("recompute").onclick = function(){reCompute();}
-//	}
-
-	//return false;
+	if(btnID === "startover")
+	{
+		//alert("click startover");
+		//reset();
+		return true;
+	}
+	
+	//if click recompute
+	if(btnID === "recompute")
+	{
+		reCompute();
+		return false;
+	}
 }
 
 function btnClicked(source)
 {
-	alert("click: " + source.id);
+	//alert("click: " + source.id);
+	btnID = source.id;
 }
+
 function reCompute()
 {
-	alert("click recompute");
+	//alert("click recompute");
 	//1. validate
 	var ni = document.getElementById("newinterest").value;
-	//alert("new interest: " + ni);
-	//alert("older p " + state.principle);
-	//alert("older a " + state.amort);
-	//showPage("Result");
-
 	if(isNaN(ni)|| ni <= 0)
 	{
 		state.status = "Interest must be a positive number!";
 		alert("message" + state.status);
-		//return true;
 	}
 	else if(ni === "")
 	{
 		state.status = "interest cannot be empty!";
 		alert("message " + state.status);
-		//return true;
 	}
 	else
 	{
-		status.interest = ni;
+		//recompute
+		state.interest = ni;
 		var data = "args=" + JSON.stringify(state); 
 		doSimpleAjax("payment.do", data, showPayment);
 	}
