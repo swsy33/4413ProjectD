@@ -118,7 +118,7 @@ function doSimpleAjax(address, data, handler) {
 	var request = new XMLHttpRequest();
 	request.open("GET", (address + "?" + data), true);
 	request.onreadystatechange =  function(){handler(request);};
-	alert("in ajax3");
+	//alert("in ajax3");
 	request.send(null);
 
 }
@@ -129,22 +129,43 @@ function showPayment(request)
 	if (request.readyState == 4 && request.status == 200) 
 	{
 		//alert("response text: " + request.responseText);
-		//result = request.responseText;
-		//alert("showPayment");
-		alert("response text: " + request.responseText);
 		var payload = JSON.parse(request.responseText); 
-		alert("pppppp");
-		alert("json text: " + payload.principle);
-//		if(isNaN(result))
-//		{
-//			setErrorMessage(result);
-//		}
-//		else
-//		{
-//			showPage("Result");
-//			document.getElementById("payment").innerHTML = result + "%";
-//		}
+		//alert("json text: " + payload.status);
+		if(payload.status === "No")
+		{
+			//print error meesage
+			alert("error message " + payload.payment);
+		}
+		else
+		{//status ok
+			showPage("Result");
+			document.getElementById("payment").innerHTML = payload.payment + "%";
+		}
 
+	}
+}
+
+function recompute()
+{
+	//1. validate
+	var ni = document.getElementById("newinterest").value;
+	alert("new interest: " + ni);
+	if(isNaN(ni)|| ni <= 0)
+	{
+		state.status = "Interest must be a positive number!";
+		alert("message" + state.status);
+	}
+	else if(ni === "")
+	{
+		state.status = "interest cannot be empty!";
+		alert("message " + state.status);
+
+	}
+	else
+	{
+		status.interest = ni;
+		var data = "args=" + JSON.stringify(state); 
+		doSimpleAjax("payment.do", data, showPayment);
 	}
 }
 

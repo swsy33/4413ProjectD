@@ -56,25 +56,31 @@ public class Service extends HttpServlet {
 		
 		String data = request.getParameter("args");
 		//System.out.println("data" + data);
-		Gson gson = new Gson();
-		JsonBean jb = gson.fromJson(data, JsonBean.class);
-		String principle = jb.getPrinciple();
-		String interest =jb.getInterest();
-		String amort = jb.getAmort();
-		
-		String result = m.servePayment(principle, amort,interest);
-		String status = result.substring(0, result.indexOf("\n"));
-		String payment = result.substring(result.indexOf("\n") + 1);
-		System.out.println("status " + status);
-		System.out.println("payment  " + payment);
-		jb.setStatus(status);
-		jb.setPayment(payment);
-		//gson.toJson(jb);
-		
-		response.setHeader("Content-Type", "text/plain");	
-		response.getWriter().write(gson.toJson(jb));
-		System.out.println(gson.toJson(jb));
-		request.getRequestDispatcher("index.html").forward(request, response);
+		if(data !=null)
+		{
+			Gson gson = new Gson();
+			JsonBean jb = gson.fromJson(data, JsonBean.class);
+			String principle = jb.getPrinciple();
+			String interest =jb.getInterest();
+			String amort = jb.getAmort();
+			
+			String result = m.servePayment(principle, amort,interest);
+			String status = result.substring(0, result.indexOf("\n"));
+			String payment = result.substring(result.indexOf("\n") + 1);
+			System.out.println("status " + status);
+			System.out.println("payment  " + payment);
+			jb.setStatus(status);
+			jb.setPayment(payment);
+			gson.toJson(jb);
+			
+			response.setHeader("Content-Type", "text/plain");	
+			response.getWriter().write(gson.toJson(jb));
+			System.out.println(gson.toJson(jb));
+		}
+		else
+		{
+			request.getRequestDispatcher("index.html").forward(request, response);
+		}
 
 		
 	}
