@@ -74,7 +74,7 @@ function validate()
 {
 	//alert("in validate1");
 	setState();
-	//alert("in validate2");
+	//alert("in validate");
 	if(state.principle === "")
 	{
 		state.status = "principle cannot be empty!";
@@ -102,6 +102,7 @@ function validate()
 		//doSimpleAjax("payment.do", data, showPayment);
 		//D2
 		doSimpleAjax("paymentXML.do",data, showPayment);
+		alert("in validate done ajax");
 	}
 	return false;
 }
@@ -147,11 +148,11 @@ function doSimpleAjax(address, data, handler) {
 }
 
 function showPayment(request)
-{
+{ 
 	if (request.readyState == 4 && request.status == 200) 
 	{
 		/* D1
-		 * var payload = JSON.parse(request.responseText); 
+		  var payload = JSON.parse(request.responseText); 
 		//alert("json text: " + payload.status);
 		if(payload.status === "No")
 		{
@@ -166,7 +167,7 @@ function showPayment(request)
 			document.getElementById("payment").innerHTML = payload.payment + "%";
 			document.getElementById("newinterest").value = "";
 		}
-		 * D1
+		  D1
 		 */
 
 		//D2

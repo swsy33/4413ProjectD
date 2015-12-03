@@ -50,13 +50,14 @@ public class Service extends HttpServlet {
 		Mortgage m = (Mortgage)this.getServletContext().getAttribute("model");
 		//---------------------------------------------------------
 		String data = request.getParameter("args");
-		
+		System.out.println("data " + data);
 		//D2---------------------------------------------
 		response.setContentType("text/xml");
 		try
 		{
 			m.servePayment(data, response.getWriter());
-		} catch (JAXBException e)
+		} 
+		catch (JAXBException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
