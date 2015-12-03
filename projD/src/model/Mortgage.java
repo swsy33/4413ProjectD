@@ -68,12 +68,6 @@ public class Mortgage {
 		JAXBContext jc = JAXBContext.newInstance(pb.getClass());
 		Marshaller mashaller = jc.createMarshaller();
 		mashaller.marshal(pb, new StreamResult(pw));
-		
-//		jb.setStatus(status);
-//		jb.setPayment(payment);
-//		gson.toJson(jb);
-//		pw.write(gson.toJson(jb));
-		
 	}
 	
 	private double computePayment(String p, String a, String r, String bank) throws Exception

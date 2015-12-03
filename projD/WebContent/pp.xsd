@@ -12,8 +12,8 @@
 			</element>
 			<element name="msg">
 				<simpleType>
-				<restriction base="string">
-				</restriction>
+					<restriction base="string">
+					</restriction>
 				</simpleType>
 			</element>
 		</sequence>

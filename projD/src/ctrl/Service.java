@@ -50,7 +50,7 @@ public class Service extends HttpServlet {
 		Mortgage m = (Mortgage)this.getServletContext().getAttribute("model");
 		//---------------------------------------------------------
 		String data = request.getParameter("args");
-		System.out.println("data " + data);
+		//System.out.println("data " + data);
 		//D2---------------------------------------------
 		response.setContentType("text/xml");
 		try

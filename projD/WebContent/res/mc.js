@@ -102,7 +102,7 @@ function validate()
 		//doSimpleAjax("payment.do", data, showPayment);
 		//D2
 		doSimpleAjax("paymentXML.do",data, showPayment);
-		alert("in validate done ajax");
+		//alert("in validate done ajax");
 	}
 	return false;
 }
@@ -171,22 +171,20 @@ function showPayment(request)
 		 */
 
 		//D2
-		alert("in showPayment");
+		//alert("in showPayment");
 		var parser = new DOMParser();
-		alert("res " + request.responseText);
+		//alert("res " + request.responseText);
 		var xmlDoc = parser.parseFromString(request.responseText,"text/xml"); 
-		alert("xmlDoc " + xmlDoc);
+		//alert("xmlDoc " + xmlDoc);
 		var root = xmlDoc.getElementsByTagName("payPod");
-		//alert("root 0 " + root[0]);
 		var sta = root[0].getAttribute("status");
-		alert(sta);
+		//alert(sta);
 		var pay = xmlDoc.getElementsByTagName("payment")[0].textContent;
-		alert("179");
-		var msg = xmlDoc.getElementByTagName("msg")[0].textContent;
-
-		if(sta === false)
+		var msg = xmlDoc.getElementsByTagName("msg")[0].textContent;
+		if(sta === "false")
 		{
-			showPage("UI"); alert("in ui");
+			showPage("UI");
+			document.getElementById("interest").value = state.interest;
 			document.getElementById("message").innerHTML = msg;
 		}
 		else
@@ -205,12 +203,14 @@ function reCompute()
 	var ni = document.getElementById("newinterest").value;
 	if(ni === "")
 	{
+		state.interest = ni;
 		state.status = "Interest cannot be empty!";
 		alert(state.status);
 	}
 	else if(isNaN(ni)|| ni <= 0)
 	{
 		state.status = "Interest must be a positive number!";
+		state.interest = ni;
 		alert(state.status);
 	}
 	else
