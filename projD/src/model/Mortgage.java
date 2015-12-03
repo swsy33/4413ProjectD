@@ -2,6 +2,13 @@ package model;
 import java.io.PrintWriter;
 import java.util.*;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.transform.stream.StreamResult;
+
+import com.google.gson.Gson;
+
 public class Mortgage {
 
 	public final static String NO_BANK = "Select a bank ...";
@@ -34,8 +41,44 @@ public class Mortgage {
 	*/
 	
 	//D2
-	public void servePayment(String args, PrintWriter ps)
+	public void servePayment(String args, PrintWriter pw) throws JAXBException
 	{
+		String data = args;
+		Gson gson = new Gson();
+		JsonBean jb = gson.fromJson(data, JsonBean.class);
+		String principle = jb.getPrinciple();
+		String interest =jb.getInterest();
+		String amort = jb.getAmort();
+
+		String result = "";
+		double pay = 0;
+		try
+		{
+			pay = computePayment(principle, amort, interest, null);
+			result = "Ok\n" + String.valueOf(pay);
+		}
+		catch(Exception e)
+		{
+			result = "No\n" + e.getMessage();
+		}
+		
+		String status = result.substring(0, result.indexOf("\n"));
+		String payment = result.substring(result.indexOf("\n") + 1);
+
+		System.out.println("status " + status);
+		System.out.println("payment  " + payment);
+		
+		//need to change to return xml to controller
+		//use JAXB to marshal a bean into xml on the print writer
+		PaymentBean pb = new PaymentBean();
+		JAXBContext jc = JAXBContext.newInstance(pb.getClass());
+		Marshaller mashaller = jc.createMarshaller();
+		mashaller.marshal(pb, new StreamResult(pw));
+		
+//		jb.setStatus(status);
+//		jb.setPayment(payment);
+//		gson.toJson(jb);
+//		pw.write(gson.toJson(jb));
 		
 	}
 	

@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBException;
 
 import com.google.gson.Gson;
 
@@ -52,7 +53,14 @@ public class Service extends HttpServlet {
 		
 		//D2---------------------------------------------
 		response.setContentType("text/xml");
-		m.servePayment(data, response.getWriter());
+		try
+		{
+			m.servePayment(data, response.getWriter());
+		} catch (JAXBException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		//System.out.println("data" + data);

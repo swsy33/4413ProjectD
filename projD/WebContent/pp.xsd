@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/pp.xsd" xmlns:tns="http://www.example.org/pp.xsd" elementFormDefault="qualified">
-<element name="papPod">
+<element name="payPod">
 	<complexType>
 		<sequence>
 			<element name="payment">
@@ -13,7 +13,6 @@
 			<element name="msg">
 				<simpleType>
 				<restriction base="string">
-					<pattern value="\d\d[A-Fa-f]{1,2}\d*"/>
 				</restriction>
 				</simpleType>
 			</element>

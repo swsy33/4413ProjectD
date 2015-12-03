@@ -150,7 +150,8 @@ function showPayment(request)
 {
 	if (request.readyState == 4 && request.status == 200) 
 	{
-		var payload = JSON.parse(request.responseText); 
+		/* D1
+		 * var payload = JSON.parse(request.responseText); 
 		//alert("json text: " + payload.status);
 		if(payload.status === "No")
 		{
@@ -165,7 +166,15 @@ function showPayment(request)
 			document.getElementById("payment").innerHTML = payload.payment + "%";
 			document.getElementById("newinterest").value = "";
 		}
-
+		* D1
+		*/
+		
+		//D2
+		var parser = new DOMParser();
+		var xmlDoc = parser.parseFromString(request.responseText,"text/xml"); 
+		var root = xmlDoc.getElementsByTagName("payPod");
+		var status = root[0].getAttribute("status");
+		var pay = xmlDoc.getElementsByTagName("payment")[0].textContent;
 	}
 }
 
