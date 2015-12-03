@@ -1,4 +1,5 @@
 package model;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class Mortgage {
@@ -11,8 +12,9 @@ public class Mortgage {
 	{
 		//this.dao = new MortgageDAO();
 	}
-
-	public String servePayment(String p, String a, String r)
+	
+	//D1
+	/*public String servePayment(String p, String a, String r)
 	{
 		String result = "";
 		double pay = 0;
@@ -29,6 +31,14 @@ public class Mortgage {
 		return result;
 		
 	}
+	*/
+	
+	//D2
+	public void servePayment(String args, PrintWriter ps)
+	{
+		
+	}
+	
 	private double computePayment(String p, String a, String r, String bank) throws Exception
 	{
 

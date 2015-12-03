@@ -7,9 +7,25 @@ var state = {principle : "",
 		status:"",
 		payment : ""};
 
+/*functions*/
+
+/*view*/
 function show(shown, hidden) {
 	document.getElementById(shown).style.display = "block";
 	document.getElementById(hidden).style.display = "none";
+}
+
+function showPage(id)
+{
+	if(id === "UI")
+	{
+		show("UI", "Result");
+	}
+	if(id === "Result")
+	{
+		show("Result", "UI");
+
+	}
 }
 
 function setDefaultAmort()
@@ -20,41 +36,77 @@ function setDefaultAmort()
 
 }
 
+function reset()
+{
+	//alert("in reset");
+	state = {principle : "",
+			interest : "",
+			amort : "25",
+			status:"",
+			payment : ""};
+	setDefaultAmort();
+	showPage("UI");
+}
+
+function updateResult()
+{
+	//if click startover
+	if(btnID === "startover")
+	{
+		return true;
+	}
+	//if click recompute
+	if(btnID === "recompute")
+	{
+		reCompute();
+		return false;
+	}
+}
+
+function btnClicked(source)
+{
+	//alert("click: " + source.id);
+	btnID = source.id;
+}
+/*view*/
+/**/
 function validate()
 {
 	//alert("in validate1");
 	setState();
-
 	//alert("in validate2");
 	if(state.principle === "")
 	{
 		state.status = "principle cannot be empty!";
-		alert("message " + state.status);
+		alert(state.status);
 	}
 	else if(isNaN(state.principle)|| state.principle <= 0)
 	{
 		state.status = "principle must be a positive number!";
-		alert("message" + state.status);
+		alert(state.status);
 	}
 	else if(state.interest === "")
 	{
 		state.status = "interest cannot be empty!";
-		alert("message " + state.status);
+		alert(state.status);
 
 	}
 	else if(isNaN(state.interest) || state.interest <= 0)
 	{
 		state.status = "interest must be a positive number!";
-		alert("message" + state.status);
+		alert(state.status);
 	}
 	else{
 		var data = "args=" + JSON.stringify(state); 
-		//alert("data is " + data);
-		doSimpleAjax("payment.do", data, showPayment);
+		//D1
+		//doSimpleAjax("payment.do", data, showPayment);
+		//D2
+		doSimpleAjax("paymentXML.do",data, showPayment);
 	}
-
 	return false;
 }
+
+
 
 function populateBankList()
 {
@@ -70,37 +122,7 @@ function populateBankList()
 		select.appendChild(el);
 	}
 }
-//---------------------------------
 
-function reset()
-{
-	//alert("in reset");
-	state = {principle : "",
-			interest : "",
-			amort : "25",
-			status:"",
-			payment : ""};
-	setDefaultAmort();
-	showPage("UI");
-}
-
-function showPage(id)
-{
-	if(id === "UI")
-	{
-		show("UI", "Result");
-	}
-	if(id === "Result")
-	{
-		show("Result", "UI");
-	}
-}
-
-function setErrorMessage(status)
-{
-	document.getElementById("message").innerHTML = status;
-	state.status = status;
-}
 //--------------------------------
 
 function setState()
@@ -128,44 +150,23 @@ function showPayment(request)
 {
 	if (request.readyState == 4 && request.status == 200) 
 	{
-		//alert("response text: " + request.responseText);
 		var payload = JSON.parse(request.responseText); 
 		//alert("json text: " + payload.status);
 		if(payload.status === "No")
 		{
-			alert("error message " + payload.payment);
+			//alert("error message " + payload.payment);
+			showPage("UI");
+			document.getElementById("message").innerHTML = payload.payment;
+			
 		}
 		else
 		{//status ok
 			showPage("Result");
 			document.getElementById("payment").innerHTML = payload.payment + "%";
+			document.getElementById("newinterest").value = "";
 		}
 
 	}
-}
-
-function updateResult()
-{
-	//if click startover
-	if(btnID === "startover")
-	{
-		//alert("click startover");
-		//reset();
-		return true;
-	}
-	
-	//if click recompute
-	if(btnID === "recompute")
-	{
-		reCompute();
-		return false;
-	}
-}
-
-function btnClicked(source)
-{
-	//alert("click: " + source.id);
-	btnID = source.id;
 }
 
 function reCompute()
@@ -173,15 +174,15 @@ function reCompute()
 	//alert("click recompute");
 	//1. validate
 	var ni = document.getElementById("newinterest").value;
-	if(isNaN(ni)|| ni <= 0)
+	if(ni === "")
+	{
+		state.status = "Interest cannot be empty!";
+		alert(state.status);
+	}
+	else if(isNaN(ni)|| ni <= 0)
 	{
 		state.status = "Interest must be a positive number!";
-		alert("message" + state.status);
-	}
-	else if(ni === "")
-	{
-		state.status = "interest cannot be empty!";
-		alert("message " + state.status);
+		alert(state.status);
 	}
 	else
 	{
@@ -192,10 +193,6 @@ function reCompute()
 	}
 }
 
-
-function test()
-{
-	return false;}
 //----------------------------------------------------
 
 window.onload = function () {
