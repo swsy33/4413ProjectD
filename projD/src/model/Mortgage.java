@@ -49,28 +49,22 @@ public class Mortgage {
 		String principle = jb.getPrinciple();
 		String interest =jb.getInterest();
 		String amort = jb.getAmort();
-
-		String result = "";
-		double pay = 0;
+		boolean status = false;
+		String msg = "";
+		double payment = 0;
 		try
 		{
-			pay = computePayment(principle, amort, interest, null);
-			result = "Ok\n" + String.valueOf(pay);
+			payment = computePayment(principle, amort, interest, null);
+			status = true;
 		}
 		catch(Exception e)
 		{
-			result = "No\n" + e.getMessage();
+			msg = e.getMessage();
 		}
-		
-		String status = result.substring(0, result.indexOf("\n"));
-		String payment = result.substring(result.indexOf("\n") + 1);
-
-		System.out.println("status " + status);
-		System.out.println("payment  " + payment);
-		
+				
 		//need to change to return xml to controller
 		//use JAXB to marshal a bean into xml on the print writer
-		PaymentBean pb = new PaymentBean();
+		PaymentBean pb = new PaymentBean(status, payment, msg);
 		JAXBContext jc = JAXBContext.newInstance(pb.getClass());
 		Marshaller mashaller = jc.createMarshaller();
 		mashaller.marshal(pb, new StreamResult(pw));

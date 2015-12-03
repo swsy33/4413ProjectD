@@ -158,7 +158,7 @@ function showPayment(request)
 			//alert("error message " + payload.payment);
 			showPage("UI");
 			document.getElementById("message").innerHTML = payload.payment;
-			
+
 		}
 		else
 		{//status ok
@@ -166,15 +166,34 @@ function showPayment(request)
 			document.getElementById("payment").innerHTML = payload.payment + "%";
 			document.getElementById("newinterest").value = "";
 		}
-		* D1
-		*/
-		
+		 * D1
+		 */
+
 		//D2
+		alert("in showPayment");
 		var parser = new DOMParser();
+		alert("res " + request.responseText);
 		var xmlDoc = parser.parseFromString(request.responseText,"text/xml"); 
+		alert("xmlDoc " + xmlDoc);
 		var root = xmlDoc.getElementsByTagName("payPod");
-		var status = root[0].getAttribute("status");
+		//alert("root 0 " + root[0]);
+		var sta = root[0].getAttribute("status");
+		alert(sta);
 		var pay = xmlDoc.getElementsByTagName("payment")[0].textContent;
+		alert("179");
+		var msg = xmlDoc.getElementByTagName("msg")[0].textContent;
+
+		if(sta === false)
+		{
+			showPage("UI"); alert("in ui");
+			document.getElementById("message").innerHTML = msg;
+		}
+		else
+		{
+			showPage("Result");
+			document.getElementById("payment").innerHTML = pay + "%";
+			document.getElementById("newinterest").value = "";
+		}
 	}
 }
 
