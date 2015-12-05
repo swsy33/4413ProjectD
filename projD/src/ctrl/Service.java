@@ -9,15 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
-import com.google.gson.Gson;
-
-import model.JsonBean;
 import model.Mortgage;
 
 /**
  * Servlet implementation class Service
  */
-@WebServlet({ "/Service", "*.do" })
+@WebServlet(urlPatterns={ "/Service", "*.do" })
 public class Service extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -50,6 +47,12 @@ public class Service extends HttpServlet {
 		Mortgage m = (Mortgage)this.getServletContext().getAttribute("model");
 		//---------------------------------------------------------
 		String data = request.getParameter("args");
+		//System.out.println(data);
+		if(data == null)
+		{
+			//default data
+			data = "{\"principle\":\"\",\"interest\"=\"\",\"amort\"=\"25\",\"status\"=\"\",\"payment\"=\"\"}";
+		}
 		//System.out.println("data " + data);
 		//D2---------------------------------------------
 		response.setContentType("text/xml");
@@ -59,7 +62,6 @@ public class Service extends HttpServlet {
 		} 
 		catch (JAXBException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

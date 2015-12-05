@@ -26,4 +26,10 @@
     <param-name>interest</param-name>
     <param-value>0.5</param-value>
   </context-param>
+  
+  <servlet>
+  <servlet-name>Service</servlet-name>
+  <jsp-file>/index.html</jsp-file>
+  </servlet>
+ 
 </web-app>

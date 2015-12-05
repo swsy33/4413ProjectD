@@ -101,7 +101,7 @@ function validate()
 		//D1
 		//doSimpleAjax("payment.do", data, showPayment);
 		//D2
-		doSimpleAjax("paymentXML.do",data, showPayment);
+		doSimpleAjax("payment.do",data, showPayment);
 		//alert("in validate done ajax");
 	}
 	return false;
