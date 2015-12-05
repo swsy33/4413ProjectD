@@ -53,16 +53,20 @@ public class Service extends HttpServlet {
 			//default data
 			data = "{\"principle\":\"\",\"interest\"=\"\",\"amort\"=\"25\",\"status\"=\"\",\"payment\"=\"\"}";
 		}
-		//System.out.println("data " + data);
+		System.out.println("in service");
 		//D2---------------------------------------------
 		response.setContentType("text/xml");
 		try
 		{
 			m.servePayment(data, response.getWriter());
+			//m.serveBank(response.getWriter());
 		} 
 		catch (JAXBException e)
 		{
 			e.printStackTrace();
+		} catch (Exception e) {
+			
+			System.out.println(e.getMessage());
 		}
 		
 		

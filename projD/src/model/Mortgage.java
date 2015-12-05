@@ -17,7 +17,7 @@ public class Mortgage {
 	
 	public Mortgage() throws Exception
 	{
-		//this.dao = new MortgageDAO();
+		this.dao = new MortgageDAO();
 	}
 	
 	//D1
@@ -39,6 +39,26 @@ public class Mortgage {
 		
 	}
 	*/
+	
+	public void serveBank(PrintWriter pw) throws Exception
+	{
+		List<String> banklist;
+		try{
+			banklist = getBankList();
+		}
+		catch(Exception e)
+		{
+			throw new Exception("cannot get bank list!");
+		}
+			BanklistBean bb = new BanklistBean(banklist);
+			JAXBContext jc = JAXBContext.newInstance(bb.getClass());
+			Marshaller mashaller = jc.createMarshaller();
+			mashaller.marshal(bb, new StreamResult(pw));
+		
+		
+		
+		
+	}
 	
 	//D2
 	public void servePayment(String args, PrintWriter pw) throws JAXBException

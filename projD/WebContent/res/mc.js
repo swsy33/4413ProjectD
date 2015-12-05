@@ -111,16 +111,43 @@ function validate()
 
 function populateBankList()
 {
+	
 	var select = document.getElementById("banklist");
+	alert("in populaateBan");
 	//need to grab options from the database
-	//getBankList();
-	var options = ["1", "2", "3", "4", "5"];
-	for (var i = 0; i < options.length; i++) {
-		var opt = options[i];
-		var el = document.createElement("option");
-		el.textContent = opt;
-		el.value = opt;
-		select.appendChild(el);
+	var request = new XMLHttpRequest();
+	request.open("GET", "", true);
+	request.onreadystatechange =  function(){showBankList(request);};
+	alert("in ajax bank list");
+	request.send(null);
+	
+	
+//	var options = ["1", "2", "3", "4", "5"];
+//	for (var i = 0; i < options.length; i++) {
+//		var opt = options[i];
+//		var el = document.createElement("option");
+//		el.textContent = opt;
+//		el.value = opt;
+//		select.appendChild(el);
+//	}
+}
+
+function showBankList(request)
+{
+	if (request.readyState == 4 && request.status == 200) 
+	{alert("show bank list 134");
+		var parser = new DOMParser();
+		alert("res " + request.responseText);
+		var xmlDoc = parser.parseFromString(request.responseText,"text/xml"); 
+		alert("xmlDoc " + xmlDoc);
+		var root = xmlDoc.getElementsByTagName("banklist")[0];
+		//var sta = root[0].getAttribute("status");
+		//alert(sta);
+		var names = root.getElementsByTagName("bankName")[0].textContent;
+		alert("names: " + names);
+		showPage("UI");
+		var select = document.getElementById("banklist");
+		select.appendChild(names);
 	}
 }
 
@@ -226,6 +253,6 @@ function reCompute()
 
 window.onload = function () {
 	reset();
-	populateBankList();
+	//populateBankList();
 
 };
