@@ -53,11 +53,7 @@ public class Mortgage {
 			BanklistBean bb = new BanklistBean(banklist);
 			JAXBContext jc = JAXBContext.newInstance(bb.getClass());
 			Marshaller mashaller = jc.createMarshaller();
-			mashaller.marshal(bb, new StreamResult(pw));
-		
-		
-		
-		
+			mashaller.marshal(bb, new StreamResult(pw));			
 	}
 	
 	//D2
