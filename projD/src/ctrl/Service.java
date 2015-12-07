@@ -49,18 +49,19 @@ public class Service extends HttpServlet {
 		String data = request.getParameter("args");
 		System.out.println("data " + data);
 		response.setContentType("text/xml");
-		try
-		{
-			m.serveBank(response.getWriter());
-		} catch (Exception e)
-		{
-			System.out.println("try bank exception");
-		}
+		
 		if(data == null)
 		{
 			//default data
-			data = "{\"principle\":\"\",\"interest\"=\"\",\"amort\"=\"25\",\"status\"=\"\",\"payment\"=\"\"}";
-
+			//data = "{\"principle\":\"\",\"interest\"=\"\",\"amort\"=\"25\",\"status\"=\"\",\"payment\"=\"\"}";
+			try
+			{	//System.out.println("58 data " + data);
+				m.serveBank(response.getWriter());
+				
+			} catch (Exception e)
+			{
+				System.out.println("try bank exception");
+			}
 		}
 		//D2---------------------------------------------
 		else if(data != null)
@@ -69,6 +70,7 @@ public class Service extends HttpServlet {
 			{
 				//m.serveBank(response.getWriter());
 				System.out.println("in service 72");
+				
 				m.servePayment(data, response.getWriter());
 
 			} 
