@@ -91,9 +91,17 @@ function validate()
 	}
 	else if(state.interest === "")
 	{
-		state.status = "interest cannot be empty!";
-		alert(state.status);
-
+		//alert("statebank"+ state.bank);
+		if(state.bank === "Select a bank ...")
+		{
+			state.status = "interest cannot be empty!";
+			alert(state.status);
+		}
+		else
+		{
+			var data = "args=" + JSON.stringify(state); 
+			doSimpleAjax("payment.do",data, showPayment);
+		}
 	}
 	else if(isNaN(state.interest) || state.interest <= 0)
 	{
@@ -115,7 +123,7 @@ function validate()
 
 function populateBankList()
 {
-	
+
 	//need to grab options from the database
 	doSimpleAjax("payment.do", "", showBank);
 }
@@ -201,12 +209,11 @@ function showPayment(request)
 		//D2
 		//alert("in showPayment");
 		var parser = new DOMParser();
-		alert("res pay " + request.responseText);
+		//alert("res pay " + request.responseText);
 		var xmlDoc = parser.parseFromString(request.responseText,"text/xml"); 
 		var root = xmlDoc.getElementsByTagName("payPod");
-		alert("status1");
 		var sta = root[0].getAttribute("status");
-		alert("status");
+		//alert("status");
 		var pay = xmlDoc.getElementsByTagName("payment")[0].textContent;
 		var msg = xmlDoc.getElementsByTagName("msg")[0].textContent;
 		if(sta === "false")
