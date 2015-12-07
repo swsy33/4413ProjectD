@@ -1,9 +1,11 @@
 /*global vars*/
 var result;
 var btnID;
+var defaultBank;
 var state = {principle : "",
 		interest : "",
 		amort : "",
+		bank:"",
 		status:"",
 		payment : ""};
 
@@ -42,9 +44,11 @@ function reset()
 	state = {principle : "",
 			interest : "",
 			amort : "25",
+			bank:"",
 			status:"",
 			payment : ""};
 	setDefaultAmort();
+	state.bank = defaultBank;
 	showPage("UI");
 }
 
@@ -112,42 +116,32 @@ function validate()
 function populateBankList()
 {
 	
-	var select = document.getElementById("banklist");
-	alert("in populaateBan");
 	//need to grab options from the database
-	var request = new XMLHttpRequest();
-	request.open("GET", "", true);
-	request.onreadystatechange =  function(){showBankList(request);};
-	alert("in ajax bank list");
-	request.send(null);
-	
-	
-//	var options = ["1", "2", "3", "4", "5"];
-//	for (var i = 0; i < options.length; i++) {
-//		var opt = options[i];
-//		var el = document.createElement("option");
-//		el.textContent = opt;
-//		el.value = opt;
-//		select.appendChild(el);
-//	}
+	doSimpleAjax("payment.do", "", showBank);
 }
 
-function showBankList(request)
+function showBank(request)
 {
 	if (request.readyState == 4 && request.status == 200) 
-	{alert("show bank list 134");
+	{
+		//alert("in showbank");
 		var parser = new DOMParser();
-		alert("res " + request.responseText);
+		//alert("res " + request.responseText);
 		var xmlDoc = parser.parseFromString(request.responseText,"text/xml"); 
-		alert("xmlDoc " + xmlDoc);
-		var root = xmlDoc.getElementsByTagName("banklist")[0];
-		//var sta = root[0].getAttribute("status");
-		//alert(sta);
-		var names = root.getElementsByTagName("bankName")[0].textContent;
-		alert("names: " + names);
-		showPage("UI");
+		var root = xmlDoc.getElementsByTagName("banklist");	
+		//alert("or   " + xmlDoc.getElementsByTagName("bankName").length);
+		var list = xmlDoc.getElementsByTagName("bankName");
+		setDefaultBank(list[0].textContent);
 		var select = document.getElementById("banklist");
-		select.appendChild(names);
+		for (var i = 0; i < list.length; i++)
+		{
+			var opt = list[i].textContent;
+			var el = document.createElement("option");
+			el.textContent = opt;
+			el.value = opt;
+			select.appendChild(el);
+		}
+		//show("UI");
 	}
 }
 
@@ -159,12 +153,19 @@ function setState()
 	var p = document.getElementById("principle").value;
 	var i = document.getElementById("interest").value;
 	var a = document.querySelector('input[name="amortization"]:checked').value;
+	var bl = document.getElementById("banklist");
+	var b = bl.options[bl.selectedIndex].value;
 	state.principle = p;
 	//alert("printipe" + state.principle)
 	state.interest = i;
 	state.amort = a;
+	state.bank = b;
 }
 
+function setDefaultBank(bankName)
+{
+	defaultBank = bankName;
+}
 function doSimpleAjax(address, data, handler) {
 	var request = new XMLHttpRequest();
 	request.open("GET", (address + "?" + data), true);
@@ -200,12 +201,12 @@ function showPayment(request)
 		//D2
 		//alert("in showPayment");
 		var parser = new DOMParser();
-		//alert("res " + request.responseText);
+		alert("res pay " + request.responseText);
 		var xmlDoc = parser.parseFromString(request.responseText,"text/xml"); 
-		//alert("xmlDoc " + xmlDoc);
 		var root = xmlDoc.getElementsByTagName("payPod");
+		alert("status1");
 		var sta = root[0].getAttribute("status");
-		//alert(sta);
+		alert("status");
 		var pay = xmlDoc.getElementsByTagName("payment")[0].textContent;
 		var msg = xmlDoc.getElementsByTagName("msg")[0].textContent;
 		if(sta === "false")
@@ -253,6 +254,6 @@ function reCompute()
 
 window.onload = function () {
 	reset();
-	//populateBankList();
+	populateBankList();
 
 };

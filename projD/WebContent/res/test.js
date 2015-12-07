@@ -10,7 +10,7 @@ function loadXml(address, handler)
 	request.open("POST", address, true);
 	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	request.onreadystatechange =  function(){showBank(request);};
-	request.send("getbank"); 
+	request.send(""); 
 	
 	
 }

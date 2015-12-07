@@ -65,12 +65,13 @@ public class Mortgage {
 		String principle = jb.getPrinciple();
 		String interest =jb.getInterest();
 		String amort = jb.getAmort();
+		String bank = jb.getBank();
 		boolean status = false;
 		String msg = "";
 		double payment = 0;
 		try
 		{
-			payment = computePayment(principle, amort, interest, null);
+			payment = computePayment(principle, amort, interest, bank);
 			status = true;
 		}
 		catch(Exception e)

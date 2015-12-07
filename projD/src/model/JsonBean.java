@@ -5,6 +5,8 @@ public class JsonBean
 	private String principle;
 	private String interest;
 	private String amort;
+	private String bank;
+	
 	private String status;
 	private String payment;
 	
@@ -44,7 +46,14 @@ public class JsonBean
 	{
 		this.amort = amort;
 	}
-	
+	public String getBank()
+	{
+		return bank;
+	}
+	public void setBank(String bank)
+	{
+		this.bank = bank;
+	}
 	
 
 }

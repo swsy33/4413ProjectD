@@ -47,32 +47,43 @@ public class Service extends HttpServlet {
 		Mortgage m = (Mortgage)this.getServletContext().getAttribute("model");
 		//---------------------------------------------------------
 		String data = request.getParameter("args");
-		//System.out.println(data);
+		System.out.println("data " + data);
+		response.setContentType("text/xml");
+		try
+		{
+			m.serveBank(response.getWriter());
+		} catch (Exception e)
+		{
+			System.out.println("try bank exception");
+		}
 		if(data == null)
 		{
 			//default data
 			data = "{\"principle\":\"\",\"interest\"=\"\",\"amort\"=\"25\",\"status\"=\"\",\"payment\"=\"\"}";
+
 		}
-		System.out.println("in service");
 		//D2---------------------------------------------
-		response.setContentType("text/xml");
-		try
+		else if(data != null)
 		{
-			m.servePayment(data, response.getWriter());
-			//m.serveBank(response.getWriter());
-		} 
-		catch (JAXBException e)
-		{
-			e.printStackTrace();
-		} catch (Exception e) {
-			
-			System.out.println(e.getMessage());
+			try
+			{
+				//m.serveBank(response.getWriter());
+				System.out.println("in service 72");
+				m.servePayment(data, response.getWriter());
+
+			} 
+			catch (JAXBException e)
+			{
+				e.printStackTrace();
+			} catch (Exception e) {
+
+				System.out.println(e.getMessage());
+			}
 		}
-		
-		
+
 		//System.out.println("data" + data);
 		//D2---------------------------------------------
-		
+
 		//D1---------------------------------------------
 		/*if(data != null)
 		{
